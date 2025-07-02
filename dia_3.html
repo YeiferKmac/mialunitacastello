@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viaje de Preguntas Interplanetario</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Great Vibes';
+      background-color: #0d0221;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .contenedor-imagen {
+      position: relative;
+      width: 100%;
+    }
+    .imagen-fondo {
+      width: 100%;
+      display: block;
+    }
+    .punto-pregunta {
+      position: absolute;
+      border-radius: 50%;
+      background-color: #fbff7f;
+      box-shadow: 0 0 10px 4px #ff9dd7;
+      cursor: pointer;
+      display: flex;
+      font-family: 'Great Vibes';
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, opacity 0.5s;
+      z-index: 2;
+    }
+    .punto-pregunta:hover {
+      transform: scale(1.1);
+    }
+    .bloqueado {
+      background-color: #001b3d;
+      box-shadow: none;
+      pointer-events: none;
+    }
+    .candado {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5em;
+      color: #fff;
+      text-shadow: 0 0 5px #ffc6ec;
+      animation: flotarBrillar 2.5s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 3;
+    }
+    @keyframes flotarBrillar {
+      0% { transform: translate(-50%, -50%) translateY(0); text-shadow: 0 0 5px #ffc6ec; }
+      50% { transform: translate(-50%, -50%) translateY(-6px); text-shadow: 0 0 15px #ff9dd7; }
+      100% { transform: translate(-50%, -50%) translateY(0); text-shadow: 0 0 5px #ffc6ec; }
+    }
+    .cuadro-pregunta {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      background: #376291;
+      color: #d5ae25;
+      padding: 1em;
+      border-radius: 12px;
+      width: 300px;
+      display: none;
+      box-shadow: 0 0 10px #ff9bb6;
+      z-index: 3;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.1em; /* puedes subirlo a 1.2em o más si deseas */
+      animation: flotarBrillar 4s ease-in-out infinite;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .opcion {
+      display: block;
+      margin: 0.5em 0;
+      padding: 0.3em 0.6em;
+      background: #376291;
+      color: #d5ae25;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.1em; /* puedes subirlo a 1.2em o más si deseas */
+    }
+    .opcion:hover {
+      background: #fbff7f;
+    }
+    .lunita {
+      position: fixed;
+      top: 40%;
+      left: 40%;
+      width: 200px;
+      height: auto;
+      display: none;
+      animation: vibrar 0.4s infinite;
+      z-index: 4;
+    }
+    @keyframes vibrar {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(2px, -2px); }
+      50% { transform: translate(-2px, 2px); }
+      75% { transform: translate(2px, 2px); }
+      100% { transform: translate(0, 0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor-imagen">
+    <img src="backgrounds/Sistema.png" alt="Mapa Galáctico" class="imagen-fondo" />
+    <div id="puntos-container"></div>
+    <div class="cuadro-pregunta" id="cuadro-pregunta"></div>
+    <img src="imagenes/blue.png" alt="lunita" class="lunita" id="lunita" />
+  </div>
+
+  <script>
+    const preguntas = [
+      { texto: "¿Qué gomitas te regalé el día que nos dimos nuestro primer beso?", opciones: ["🐛Gusanitos", "💖Corazones", "🍉Lenguas", "🌈Arcoiris"], correcta: "🐛Gusanitos" },
+      { texto: "¿Qué canción bailamos bajo la lluvia?", opciones: ["💽Die with a smile", "🌙Fly me to the moon", "⌛It's been a long long time", "🥰I guess i'm in love"], correcta: "⌛It's been a long long time" },
+      { texto: "¿Cuál fue el primer regalo que te di?", opciones: ["🪽Libros de la saga 'Alas' ", "📄Figuritas de origami", "💘Razones por las que te amo", "🗺Mapa de tu reino"], correcta: "📄Figuritas de origami" },
+      { texto: "¿Cual fue la primera canción que te dediqué?", opciones: ["😍Bonita", "📍Until I found yoy", "💆🏼‍♂️Cafuné", "🍦Piel vainilla"], correcta: "💆🏼‍♂️Cafuné" },
+      { texto: "¿Quién fue nuestro primer hij@?", opciones: ["🐱Ashtrid", "🐧Remi", "🐿️Astrid", "🐹Aura"], correcta: "🐧Remi" },
+      { texto: "Hay un beso especial que tuvimos a la luz del atardecer, ¿dónde fue?", opciones: ["✨SD", "✨TX", "✨Apartamento", "✨RGD"], correcta: "✨SD" },
+      { texto: "¿Cuál fua la primera película que nos vimos?", opciones: ["❄Frozen", "⏳El tiempo que tenemos", "❤️‍🩹Corazones malheridos", "🐸La princesa y el sapo"], correcta: "❤️‍🩹Corazones malheridos" },
+      { texto: "¿Qué es lo que más me encanta que me hagas?", opciones: ["💅🏻Aruñones", "🫦Mordiscos", "💋Besos", "🍭Chupones"], correcta: "🍭Chupones" },
+      { texto: "¿Dónde pensabas llevarme para nuestra primera cita?", opciones: ["⛲Museo de Bogotá", "🛩Museo de FFMM", "🛶Museo Nacional", "📚Biblioteca Luis Ángel Arango"], correcta: "🛶Museo Nacional" },
+      { texto: "¿Cuál fue tu primer regalo que me hizo llorar?", opciones: ["🏞️Un lugar fuera del ruido", "🏎Expo de carritos", "💌Razones por las que me gustas", "❤️‍🩹Razones por las que no estar triste"], correcta: "❤️‍🩹Razones por las que no estar triste" },
+      { texto: "¿Cuál fue nuestro beso más especial?", opciones: ["Frente a la tadeo", "Bajo el atardecer", "Nuestra primera cita", "Oki"] },
+      { texto: "¿Cuál es nuestro lugar más seguro?", opciones: ["⛺Fuerte", "🏰Castillo", "🏢TX", "✨Estrellas"], correcta: "⛺Fuerte" }
+    ];
+
+    const posiciones = [
+      ["-10%", "-5%", "250px", "250px"],
+      ["18.6%", "11.9%", "62px", "62px"],
+      ["1.3%", "17.9%", "78px", "78px"],
+      ["28.1%", "13.4%", "110px", "110px"],
+      ["27.3%", "19.4%", "48px", "46px"],
+      ["11%", "32.85%", "90px", "90px"],
+      ["30.8%", "36%", "180px", "180px"],
+      ["33.7%", "53%", "155px", "155px"],
+      ["58%", "17.3%", "130px", "130px"],
+      ["70.4%", "50%", "155px", "155px"],
+      ["70%", "78%", "65px", "65px"],
+      ["43.7%", "81.05%", "60px", "60px"]
+    ];
+
+    const puntosContainer = document.getElementById('puntos-container');
+    const cuadro = document.getElementById('cuadro-pregunta');
+    const lunita = document.getElementById('lunita');
+    let preguntaActual = 0;
+
+    posiciones.forEach((pos, index) => {
+      const punto = document.createElement('div');
+      punto.className = 'punto-pregunta bloqueado';
+      punto.style.top = pos[0];
+      punto.style.left = pos[1];
+      punto.style.width = pos[2];
+      punto.style.height = pos[3];
+      punto.dataset.index = index;
+
+      const candado = document.createElement('span');
+      candado.className = 'candado';
+      candado.textContent = '🔒';
+      punto.appendChild(candado);
+
+      punto.addEventListener('click', () => mostrarPregunta(index, punto));
+      puntosContainer.appendChild(punto);
+    });
+
+    const puntos = document.querySelectorAll('.punto-pregunta');
+    puntos[preguntaActual].classList.remove('bloqueado');
+    const candadoInicial = puntos[preguntaActual].querySelector('.candado');
+    if (candadoInicial) candadoInicial.remove();
+
+    function mostrarPregunta(index, punto) {
+      if (index !== preguntaActual) return;
+
+      const preg = preguntas[index];
+      cuadro.innerHTML = `<p>${preg.texto}</p>`;
+      cuadro.style.opacity = '1';
+      preg.opciones.forEach(op => {
+        const btn = document.createElement('button');
+        btn.className = 'opcion';
+        btn.textContent = op;
+        btn.onclick = () => validarRespuesta(op, preg.correcta, index, punto);
+        cuadro.appendChild(btn);
+      });
+      cuadro.style.display = 'block';
+    }
+
+    function validarRespuesta(seleccionada, correcta, index, punto) {
+      if (seleccionada === correcta) {
+        cuadro.style.display = 'none';
+        punto.remove();
+        if (index + 1 < puntos.length) {
+          puntos[index + 1].classList.remove('bloqueado');
+          const nuevoCandado = puntos[index + 1].querySelector('.candado');
+          if (nuevoCandado) nuevoCandado.remove();
+          preguntaActual++;
+        }
+      } else {
+        lunita.style.display = 'block';
+        setTimeout(() => lunita.style.display = 'none', 1500);
+      }
+    }
+  </script>
+</body>
+</html>
