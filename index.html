@@ -311,11 +311,39 @@
       },
 
       2: {
-        titulo: "Bienvenida al Reino del Amor",
+        titulo: "Un corto poema 💌: <br> Eres ",
         html: `
-          <p>✨ Bienvenida, mi lunita... este es nuestro castillo encantado, donde cada día se abrirá una ventanita con magia, amor y sueños. ✨</p>
-          <p>Hoy comienza nuestro viaje: tú y yo, entre estrellas y dragones, creando un universo a nuestro ritmo.</p>
-          <audio controls src="audio/bienvenida.mp3"></audio>
+          <p>Eres vida en mi ser. <br>
+          Eres mucho en mi ser. <br>
+          Eres mi primer aliento, <br>
+          mi primer pensamiento.<br>
+          </p>
+          <p>Eres vida en mi ser, <br>
+          color de mi existencia, <br>
+          brújula hacia mi rumbo,<br>
+          eres mi luna perfecta.<br>
+          </p>
+          <p>Perfecta, o no perfecta,<br> 
+          eres tú quien me llena:<br>
+          aire de mis pulmones,<br>
+          eres vida en mi ser.<br>
+          </p>
+          <p>Sinfonía de mi corazón, <br>
+          mis pies van a tu voz.<br>
+          Eres vida en mi ser,<br>
+          y mi alma va a tu esplendor. <br>
+          </p>
+          <p>Eres paz a mis tormentos,<br>
+          eres luz en mi noche,<br>
+          refugio a mis miedos<br>
+          y calma a mi Temores.<br>
+          </p>
+          <p>Eres vida en mi ser.<br>
+          Eres mucho en mi ser.<br>
+          Eres vida en mi vida,<br>
+          eres mi ser, mi vida<br>
+          </p>          
+        
         `
       },
       
@@ -377,6 +405,7 @@
         dia.classList.add('puerta-especial');
       }
 
+      // Solo si es el día 2 (índice 1)
       dia.appendChild(fondo);
       dia.appendChild(izq);
       dia.appendChild(der);
@@ -447,9 +476,52 @@
       void contenidoDia.offsetWidth;
       contenidoDia.classList.add('mostrar');
       contenidoDia.scrollIntoView({ behavior: 'smooth' });
+
+            // Si el día abierto es el 2, reproduce los audios
+      if (numero === 2) {
+        const audio1 = document.getElementById('audio-poema-1');
+        const audio2 = document.getElementById('audio-poema-2');
+        const audio3 = document.getElementById('audio-poema-3')
+        audio1.currentTime = 0;
+        audio2.currentTime = 0;
+        audio3.currentTime = 0;
+
+        audio1.volume = 0.15; // Volumen ajustado para fondo suave
+        audio2.volume = 0.1; // Volumen muy bajo para ambiente
+        audio3.volume = 0.3;
+
+        // Reproduce ambos
+        const playAudio = (audio) => {
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.log('Audio bloqueado por el navegador hasta que haya una interacción.');
+            });
+          }
+        };
+
+        playAudio(audio1);
+        playAudio(audio2);
+        setTimeout(() => playAudio(audio3), 1000);
+      } else {
+        // Si no es el día 2, pausa y reinicia los audios
+        const audio1 = document.getElementById('audio-poema-1');
+        const audio2 = document.getElementById('audio-poema-2');
+        const audio3 = document.getElementById('audio-poema-3');
+        audio1.pause();
+        audio2.pause();
+        audio3.pause();
+        audio1.currentTime = 0.5;
+        audio2.currentTime = 0.5;
+        audio3.currentTime = 0.5;
+      }
+
     }
 
   </script>
+  <audio id="audio-poema-1" src="music/553821__ekvelika__chonology-of-love.wav" preload="auto" loop></audio>
+  <audio id="audio-poema-2" src="music/795811__ncveticanin__birds-singing.wav" preload="auto" loop></audio>
+  <audio id="audio-poema-3" src="music/eres.mp3" preload="auto"></audio>
 </body>
 </html>
 

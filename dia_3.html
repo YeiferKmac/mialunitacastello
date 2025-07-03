@@ -131,10 +131,10 @@
       { texto: "Hay un beso especial que tuvimos a la luz del atardecer, ¿dónde fue?", opciones: ["✨SD", "✨TX", "✨Apartamento", "✨RGD"], correcta: "✨SD" },
       { texto: "¿Cuál fua la primera película que nos vimos?", opciones: ["❄Frozen", "⏳El tiempo que tenemos", "❤️‍🩹Corazones malheridos", "🐸La princesa y el sapo"], correcta: "❤️‍🩹Corazones malheridos" },
       { texto: "¿Qué es lo que más me encanta que me hagas?", opciones: ["💅🏻Aruñones", "🫦Mordiscos", "💋Besos", "🍭Chupones"], correcta: "🍭Chupones" },
-      { texto: "¿Dónde pensabas llevarme para nuestra primera cita?", opciones: ["⛲Museo de Bogotá", "🛩Museo de FFMM", "🛶Museo Nacional", "📚Biblioteca Luis Ángel Arango"], correcta: "🛶Museo Nacional" },
+      { texto: "¿Dónde pensabas llevarme para nuestra primera cita?", opciones: ["🛶Museo Nacional", "🛩Museo de FFMM", "⛲Museo de Bogotá", "📚Biblioteca Luis Ángel Arango"], correcta: "🛶Museo Nacional" },
       { texto: "¿Cuál fue tu primer regalo que me hizo llorar?", opciones: ["🏞️Un lugar fuera del ruido", "🏎Expo de carritos", "💌Razones por las que me gustas", "❤️‍🩹Razones por las que no estar triste"], correcta: "❤️‍🩹Razones por las que no estar triste" },
-      { texto: "¿Cuál fue nuestro beso más especial?", opciones: ["Frente a la tadeo", "Bajo el atardecer", "Nuestra primera cita", "Oki"] },
-      { texto: "¿Cuál es nuestro lugar más seguro?", opciones: ["⛺Fuerte", "🏰Castillo", "🏢TX", "✨Estrellas"], correcta: "⛺Fuerte" }
+      { texto: "¿Cuál fue nuestro beso más especial?", opciones: ["🏫Frente a la tadeo", "🌇Bajo el atardecer", "🏢Nuestra primera cita", "💐Cuando te pedí ser mi novia"] },
+      { texto: "¿Cuál es nuestro lugar más seguro?", opciones: ["⛺Fuerte", "🏰Castillo", "🏢TX", "✨Estrellas"]}
     ];
 
     const posiciones = [
@@ -152,6 +152,7 @@
       ["43.7%", "81.05%", "60px", "60px"]
     ];
 
+    const preguntasSinRespuestaCorrecta = [10, 11];
     const puntosContainer = document.getElementById('puntos-container');
     const cuadro = document.getElementById('cuadro-pregunta');
     const lunita = document.getElementById('lunita');
@@ -182,33 +183,33 @@
 
     function mostrarPregunta(index, punto) {
       if (index !== preguntaActual) return;
-
       const preg = preguntas[index];
       cuadro.innerHTML = `<p>${preg.texto}</p>`;
-      cuadro.style.opacity = '1';
       preg.opciones.forEach(op => {
-        const btn = document.createElement('button');
-        btn.className = 'opcion';
-        btn.textContent = op;
-        btn.onclick = () => validarRespuesta(op, preg.correcta, index, punto);
+        const btn = document.createElement('button'); btn.className = 'opcion'; btn.textContent = op;
+        if (preguntasSinRespuestaCorrecta.includes(index)) {
+          btn.onclick = () => avanzarPregunta(index, punto);
+        } else {
+          btn.onclick = () => validarRespuesta(op, preg.correcta, index, punto);
+        }
         cuadro.appendChild(btn);
       });
-      cuadro.style.display = 'block';
+      cuadro.style.display = 'block'; cuadro.style.opacity = '1';
+    }
+
+    function avanzarPregunta(index, punto) {
+      cuadro.style.display = 'none'; punto.remove();
+      if (index + 1 < puntos.length) {
+        puntos[index + 1].classList.remove('bloqueado');
+        const nuevoCandado = puntos[index + 1].querySelector('.candado'); if (nuevoCandado) nuevoCandado.remove(); preguntaActual++;
+      }
     }
 
     function validarRespuesta(seleccionada, correcta, index, punto) {
       if (seleccionada === correcta) {
-        cuadro.style.display = 'none';
-        punto.remove();
-        if (index + 1 < puntos.length) {
-          puntos[index + 1].classList.remove('bloqueado');
-          const nuevoCandado = puntos[index + 1].querySelector('.candado');
-          if (nuevoCandado) nuevoCandado.remove();
-          preguntaActual++;
-        }
+        avanzarPregunta(index, punto);
       } else {
-        lunita.style.display = 'block';
-        setTimeout(() => lunita.style.display = 'none', 1500);
+        lunita.style.display = 'block'; setTimeout(() => lunita.style.display = 'none', 1500);
       }
     }
   </script>
