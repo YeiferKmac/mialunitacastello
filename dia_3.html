@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viaje de Preguntas Interplanetario</title>
+  <title>Viaje interplanetario </title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap" rel="stylesheet">
   <style>
     body {
@@ -120,21 +120,56 @@
     <div class="cuadro-pregunta" id="cuadro-pregunta"></div>
     <img src="imagenes/blue.png" alt="lunita" class="lunita" id="lunita" />
   </div>
+  <!-- 🎵 Música de fondo -->
+  <audio id="musica-fondo" src="music/Interstellar Main Theme - Hans Zimmer.mp3" preload="auto" loop></audio>
 
+  <!-- 💌 Cuadro final -->
+  <div id="cuadro-final" style="
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 246, 255, 0.9);
+    color: #4a004f;
+    padding: 1.5em 2em;
+    border-radius: 20px;
+    box-shadow: 0 0 10px #ffd6e8;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.3em;
+    text-align: center;
+    z-index: 999;
+  ">
+    🌟 EXCELENTEEEE, mi amor! Has contestado correctamente todas las preguntas de este gran viaje. <br>
+    Cada planeta es un pasito y recuerdo de nuestro amor... y tú brillaste en cada uno. Te amo siempreee, mi lunita hermosa 🚀💖
+  </div>
   <script>
+      // 🎵 Iniciar música con retraso
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const musica = document.getElementById('musica-fondo');
+        musica.volume = 0.25;
+        const playPromise = musica.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.log("Autoplay bloqueado por el navegador. Se necesita interacción.");
+          });
+        }
+      }, 0); // Retraso de 0 milisegundo
+    });
     const preguntas = [
-      { texto: "¿Qué gomitas te regalé el día que nos dimos nuestro primer beso?", opciones: ["🐛Gusanitos", "💖Corazones", "🍉Lenguas", "🌈Arcoiris"], correcta: "🐛Gusanitos" },
-      { texto: "¿Qué canción bailamos bajo la lluvia?", opciones: ["💽Die with a smile", "🌙Fly me to the moon", "⌛It's been a long long time", "🥰I guess i'm in love"], correcta: "⌛It's been a long long time" },
-      { texto: "¿Cuál fue el primer regalo que te di?", opciones: ["🪽Libros de la saga 'Alas' ", "📄Figuritas de origami", "💘Razones por las que te amo", "🗺Mapa de tu reino"], correcta: "📄Figuritas de origami" },
-      { texto: "¿Cual fue la primera canción que te dediqué?", opciones: ["😍Bonita", "📍Until I found yoy", "💆🏼‍♂️Cafuné", "🍦Piel vainilla"], correcta: "💆🏼‍♂️Cafuné" },
-      { texto: "¿Quién fue nuestro primer hij@?", opciones: ["🐱Ashtrid", "🐧Remi", "🐿️Astrid", "🐹Aura"], correcta: "🐧Remi" },
-      { texto: "Hay un beso especial que tuvimos a la luz del atardecer, ¿dónde fue?", opciones: ["✨SD", "✨TX", "✨Apartamento", "✨RGD"], correcta: "✨SD" },
-      { texto: "¿Cuál fua la primera película que nos vimos?", opciones: ["❄Frozen", "⏳El tiempo que tenemos", "❤️‍🩹Corazones malheridos", "🐸La princesa y el sapo"], correcta: "❤️‍🩹Corazones malheridos" },
-      { texto: "¿Qué es lo que más me encanta que me hagas?", opciones: ["💅🏻Aruñones", "🫦Mordiscos", "💋Besos", "🍭Chupones"], correcta: "🍭Chupones" },
-      { texto: "¿Dónde pensabas llevarme para nuestra primera cita?", opciones: ["🛶Museo Nacional", "🛩Museo de FFMM", "⛲Museo de Bogotá", "📚Biblioteca Luis Ángel Arango"], correcta: "🛶Museo Nacional" },
-      { texto: "¿Cuál fue tu primer regalo que me hizo llorar?", opciones: ["🏞️Un lugar fuera del ruido", "🏎Expo de carritos", "💌Razones por las que me gustas", "❤️‍🩹Razones por las que no estar triste"], correcta: "❤️‍🩹Razones por las que no estar triste" },
-      { texto: "¿Cuál fue nuestro beso más especial?", opciones: ["🏫Frente a la tadeo", "🌇Bajo el atardecer", "🏢Nuestra primera cita", "💐Cuando te pedí ser mi novia"] },
-      { texto: "¿Cuál es nuestro lugar más seguro?", opciones: ["⛺Fuerte", "🏰Castillo", "🏢TX", "✨Estrellas"]}
+      { texto: "Nuestro primer beso estuvo dado por insinuaciones y acercamientos, algo que entre el gusto y el placer hizo que nuestros labios se tocarán por primera vez. ¿Qué gomitas te regalé el día que nos dimos nuestro primer beso?", opciones: ["🐛Gusanitos", "💖Corazones", "🍉Lenguas", "🌈Arcoiris"], correcta: "🐛Gusanitos" },
+      { texto: "Un día especial, mientras hacíamos los regalos para nuestro primer mes, esperando que pasara el tiempo y bajo la vista más hermosa del SD (tus ojos), bailamos haciendo no sólo magio, sino también amor... ¿Qué canción bailamos bajo la lluvia?", opciones: ["💽Die with a smile", "🌙Fly me to the moon", "⌛It's been a long long time", "🥰I guess i'm in love"], correcta: "⌛It's been a long long time" },
+      { texto: "Bajo errores tontos y muchas risas, bajo una soleada tarde y una charla casual, te entregué mi primer muestra de amor. ¿Cuál fue el primer regalo que te di?", opciones: ["🪽Libros de la saga 'Alas' ", "📄Figuritas de origami", "💘Razones por las que te amo", "🗺Mapa de tu reino"], correcta: "📄Figuritas de origami" },
+      { texto: "Una tarde, ya con el sol cayendo, juntos en mi habitación, nos llenó la magia en sonidos y el pálpito de mi corazón cuando tu cabeza yacía en mi pecho. ¿Cual fue la primera canción que te dediqué?", opciones: ["😍Bonita", "📍Until I found yoy", "💆🏼‍♂️Cafuné", "🍦Piel vainilla"], correcta: "💆🏼‍♂️Cafuné" },
+      { texto: "Un poco entre bromas, y algo más que dedicación, decidimos ponernos un reto... Uno muy lindo y especial para cuidar. ¿Quién fue nuestro primer hij@?", opciones: ["🐱Ashtrid", "🐧Remi", "🐿️Astrid", "🐹Aura"], correcta: "🐧Remi" },
+      { texto: "Hay un beso mágico, uno lleno de magia, de colores y pasión. Un beso arropado por la luz del sol que caía al oscurecer. ¿Dónde fue este primer beso bajo un hermoso atardecer?", opciones: ["✨SD", "✨TX", "✨Apartamento", "✨RGD"], correcta: "✨SD" },
+      { texto: "Un poco especial, buscando tantita más conexión, hicimos nuestra primera videollamda, algo especial que también marcó de la manera más hermosa el inicio de esta relación. ¿Cuál fua la primera película que nos vimos?", opciones: ["❄Frozen", "⏳El tiempo que tenemos", "❤️‍🩹Corazones malheridos", "🐸La princesa y el sapo"], correcta: "❤️‍🩹Corazones malheridos" },
+      { texto: "Si de pasión he de hablar, entonces dejame tu marca, ya sea para alardear pero un poco más para desear. ¿Qué es lo que más me encanta que me hagas durante la intimidad?", opciones: ["💅🏻Aruñones", "🫦Mordiscos", "💋Besos", "🍭Chupones"], correcta: "🍭Chupones" },
+      { texto: "Eras tú quien daría ese primer paso, ese primer momento para conocernos y disfrutar (un poco entre besos). ¿Dónde pensabas llevarme para nuestra primera cita?", opciones: ["🛶Museo Nacional", "🛩Museo de FFMM", "⛲Museo de Bogotá", "📚Biblioteca Luis Ángel Arango"], correcta: "🛶Museo Nacional" },
+      { texto: "Siempre he sido sentimental, desde el primer regalo, la primera muestra de amor o la primera película... Siempre han de salir, siempre me he de conmover, pero siempre hay una primera vez. ¿Cuál fue tu primer regalo que me hizo llorar?", opciones: ["🏞️Un lugar fuera del ruido", "🏎Expo de carritos", "💌Razones por las que me gustas", "❤️‍🩹Razones por las que no estar triste"], correcta: "❤️‍🩹Razones por las que no estar triste" },
+      { texto: "Y la magia, aun por ser escrita, nace en tu cuerpo y se funda en tu boca... ¿Cuál fue nuestro beso más especial?", opciones: ["🏫Frente a la tadeo", "🌇Bajo el atardecer", "🏢Nuestra primera cita", "💐Cuando te pedí ser mi novia"] },
+      { texto: "Y así, un poco más especial, siempre es un buen lugar para regresar, uno lindo que cura el corazón, pero nunca debe faltar el amor. ¿Cuál es nuestro lugar más seguro?", opciones: ["⛺Fuerte", "🏰Castillo", "🏢TX", "✨Estrellas"]}
     ];
 
     const posiciones = [
@@ -202,6 +237,12 @@
       if (index + 1 < puntos.length) {
         puntos[index + 1].classList.remove('bloqueado');
         const nuevoCandado = puntos[index + 1].querySelector('.candado'); if (nuevoCandado) nuevoCandado.remove(); preguntaActual++;
+      } else {
+        // 💌 Mostrar mensaje final al completar todas
+        const final = document.getElementById('cuadro-final');
+        setTimeout(() => {
+          final.style.display = 'block';
+        }, 200);
       }
     }
 
@@ -213,5 +254,6 @@
       }
     }
   </script>
+  
 </body>
 </html>
