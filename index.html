@@ -94,17 +94,7 @@
       50% { box-shadow: 0 0 20px 8px #ffd6e8; }
       100% { box-shadow: 0 0 0px #fff; }
     }
-    .contenido-dia {
-      opacity: 0;
-      transition: opacity 1s ease;
-      background: #fff;
-      padding: 2em;
-      border-radius: 20px;
-      max-width: 600px;
-      margin: 4em auto;
-      font-size: 1.2em;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
+
     .contenido-dia.mostrar {
       opacity: 1;
     }
@@ -250,6 +240,82 @@
       animation: desenrollarPapiro 1.2s ease-out forwards;
     }
 
+    .carrusel {
+      position: relative;
+      max-width: 600px;
+      margin: 1em auto;
+      overflow: hidden;
+      background: #fff5fa;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.4);
+      padding: 1em;
+      box-sizing: border-box;
+    }
+
+    .video-item {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .video-item iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      border: none;
+    }
+
+    .dedicatoria {
+      margin-top: 0.5em;
+      width: 100%;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1em;
+      color: #e86c9a;
+      text-align: center;
+      background: #ffeef4;
+      padding: 0.8em 1.2em;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(255, 182, 193, 0.4);
+    }
+
+    .flecha {
+      position: absolute;
+      top: 45%;
+      transform: translateY(-50%);
+      font-size: 1.5em;
+      background: #ffe4ec;
+      color: #e86c9a;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .flecha.izquierda {
+      left: -12px;
+    }
+
+    .flecha.derecha {
+      right: -12px;
+    }
+
+    .videos {
+      display: flex;
+      transition: transform 0.5s ease;
+      width: 100%;
+    }
+
+    .video-item {
+      width: 100%;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
+
   </style>
 </head>
 <body>
@@ -354,6 +420,41 @@
           
           <p>Haz clic en el siguiente enlace para embarcarte en esta travesía estelar:</p>
           <a href="dia_3.html" target="_blank" style="font-weight: bold; color: #e86c9a;">🪐 Ir al Viaje Interplanetario</a>
+        `
+      },
+      4: {
+        titulo: "Cortometrajes del corazón 🎥💗",
+        html: `
+          <p>Hoy, mi amor, no necesitas palabras… solo mirar. 🌙</p>
+          <p>Te he preparado una pequeña colección de cortometrajes que hablan por nosotros, que cuentan historias donde yo te veo reflejada, y donde el amor toma forma, incluso desde el silencio.</p>
+          <p>Dedícate este instante. Relájate, respira y deja que cada escena te abrace. Porque en cada fotograma, te estoy diciendo "te amo", una y otra vez.</p>
+          <div class="carrusel">
+            <button class="flecha izquierda">⟨</button>
+            <div class="videos" data-index="0">
+              <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/rcDaB-P9sK8?si=D847MEv6IpvnCLJ6" frameborder="0" allowfullscreen></iframe>
+                <p class="dedicatoria">En silencio, sólo con la música fluyendo, nuestras almas bailan en paz. En silencio, sólo con la música floyendo, desearía hacerme junto a tu corazón. </p>
+              </div>
+              <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/FCF-rNMLVpE?si=fTdVEwo2jIlbnddt frameborder="0" allowfullscreen></iframe>
+                <p class="dedicatoria">Aún cuando todo cambia siempre es lindo volver al pasado, volver con los amigos más especiales y aquellos que nos llenan de magia y calidez.</p>
+              </div>
+              <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/aVV_hqtrW0U?si=yqPZ2Zz9DqH_tkhu" frameborder="0" allowfullscreen></iframe>
+                <p class="dedicatoria">Daría la vida por ti.<br> Daría mi corazón por ti.<br> Daría todo por el amor.<br> Daría todo por ti, corazón.</p>
+              </div>
+              <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/OuJ4BBQ0nhc?si=WUnGRhKA0OHtbJCj frameborder="0" allowfullscreen></iframe>
+                <p class="dedicatoria">Y aún cuando todo es mala suerte, hay brillito y luz en nosotros. Porque aunque no seamos perfectos, somos reales y juntos lo lograremos.</p>
+              </div>
+              <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/-Qn9g1wvsgM?si=eHPP6czoNyfG85rw" frameborder="0" allowfullscreen></iframe>
+                <p class="dedicatoria">No es más que una bella historia de amor... Te amooooo, corazón mio</p>
+              </div>
+            </div>
+            <button class="flecha derecha">⟩</button>
+          </div>
+
         `
       },
 
@@ -526,6 +627,26 @@
       }
 
     }
+
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('flecha')) {
+        const carrusel = e.target.closest('.carrusel');
+        const videos = carrusel.querySelector('.videos');
+        const total = videos.children.length;
+        let currentIndex = parseInt(videos.dataset.index || '0');
+        let newIndex = currentIndex;
+
+        if (e.target.classList.contains('izquierda')) {
+          newIndex = (currentIndex - 1 + total) % total;
+        } else if (e.target.classList.contains('derecha')) {
+          newIndex = (currentIndex + 1) % total;
+        }
+
+        videos.style.transform = `translateX(-${100 * newIndex}%)`;
+        videos.dataset.index = newIndex;
+      }
+    });
+
 
   </script>
   <audio id="audio-poema-1" src="music/553821__ekvelika__chonology-of-love.wav" preload="auto" loop></audio>
